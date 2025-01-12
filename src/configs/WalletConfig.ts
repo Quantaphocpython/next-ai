@@ -7,8 +7,8 @@ import { env } from '@ai-rsc/env.mjs';
 const { wallets } = getDefaultWallets();
 
 const walletConfig = getDefaultConfig({
-  appName: env.APP_NAME || '',
-  projectId: env.WALLET_CONNECT_PROJECT_ID || '',
+  appName: 'DuckAI',
+  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || '',
   wallets: [
     ...wallets,
     {

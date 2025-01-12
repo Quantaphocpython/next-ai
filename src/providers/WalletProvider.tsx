@@ -8,15 +8,17 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useTheme } from 'next-themes';
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { WagmiProvider } from 'wagmi';
 import { network } from '@ai-rsc/configs/WalletConfig';
 
 const queryClient = new QueryClient();
 
-type Props = React.ReactNode;
+type Props = {
+  children: ReactNode;
+};
 
-export default function WalletProvider({ children }: { children: Props }) {
+export default function WalletProvider({ children }: Props) {
   const [mounted, setMounted] = React.useState(false);
   const { theme } = useTheme();
   const [rainbowKitTheme, setRainbowKitTheme] = useState(

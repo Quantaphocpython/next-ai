@@ -5,6 +5,8 @@ import { Price } from '@ai-rsc/components/llm-crypto/price';
 import { PriceSkeleton } from '@ai-rsc/components/llm-crypto/price-skeleton';
 import { Stats } from '@ai-rsc/components/llm-crypto/stats';
 import { StatsSkeleton } from '@ai-rsc/components/llm-crypto/stats-skeleton';
+import { AutoConnectWallet } from '@ai-rsc/components/llm-wallet/AutoConnectWallet';
+import TokenTransferComponent from '@ai-rsc/components/llm-wallet/TokenTransferComponent';
 import { env } from '@ai-rsc/env.mjs';
 import { openai } from '@ai-sdk/openai';
 import type { CoreMessage, ToolInvocation } from 'ai';
@@ -42,18 +44,20 @@ const binance = new MainClient({
   !-- should respond that they are a demo and cannot do that. Besides that, the LLM can chat with users as normal.
 */
 
-const content = `\
-You are a crypto bot and you can help users get the prices of cryptocurrencies.
+const content = `
+You are a crypto bot and you can help users get the prices of cryptocurrencies, connect their wallet, or send tokens.
 
 Messages inside [] means that it's a UI element or a user event. For example:
 - "[Price of BTC = 69000]" means that the interface of the cryptocurrency price of BTC is shown to the user.
+- "[Wallet connected]" means that the wallet has been connected.
 
+If the user wants to connect their wallet, call \`connect_wallet\` to open the wallet connection modal.
 If the user wants the price, call \`get_crypto_price\` to show the price.
 If the user wants the market cap or other stats of a given cryptocurrency, call \`get_crypto_stats\` to show the stats.
-If the user wants a stock price, it is an impossible task, so you should respond that you are a demo and cannot do that.
+If the user wants to send tokens, call \`send_token\` to send the specified amount of tokens to the given address.
 If the user wants to do anything else, it is an impossible task, so you should respond that you are a demo and cannot do that.
 
-Besides getting prices of cryptocurrencies, you can also chat with users.
+Besides these actions, you can also chat with users.
 `;
 
 export async function sendMessage(message: string): Promise<{
@@ -93,6 +97,77 @@ export async function sendMessage(message: string): Promise<{
       return <BotMessage>{content}</BotMessage>;
     },
     tools: {
+      send_token: {
+        description: 'Send a specified amount of tokens to a given address',
+        parameters: z.object({
+          amount: z.number().positive().describe('Amount of tokens to send'),
+          toAddress: z
+            .string()
+            .refine((addr) => /^0x[a-fA-F0-9]{40}$/.test(addr), {
+              message: 'Invalid Ethereum address',
+            })
+            .describe('Recipient wallet address'),
+        }),
+        generate: async function* (params: {
+          amount: number;
+          toAddress: string;
+        }) {
+          // Type assertion để đảm bảo địa chỉ là `0x${string}`
+          const toAddress = params.toAddress as `0x${string}`;
+
+          yield (
+            <BotCard>
+              <BotMessage>
+                Preparing to send {params.amount} to {toAddress}...
+              </BotMessage>
+            </BotCard>
+          );
+
+          return (
+            <BotCard>
+              <TokenTransferComponent
+                amount={params.amount}
+                toAddress={toAddress}
+              />
+            </BotCard>
+          );
+        },
+      },
+      connect_wallet: {
+        description: 'Trigger wallet connection interface',
+        parameters: z.object({}),
+        generate: async function* () {
+          yield (
+            <BotCard>
+              <BotMessage>
+                Please connect your wallet. A connection modal will open
+                shortly.
+              </BotMessage>
+              <div
+                data-wallet-connect-trigger="true"
+                className="cursor-pointer"
+              >
+                Click to Connect Wallet
+              </div>
+            </BotCard>
+          );
+
+          history.done([
+            ...history.get(),
+            {
+              role: 'assistant',
+              name: 'connect_wallet',
+              content: `[Wallet connection triggered]`,
+            },
+          ]);
+
+          return (
+            <BotCard>
+              <AutoConnectWallet />
+            </BotCard>
+          );
+        },
+      },
       get_crypto_price: {
         description:
           'Get the current price of a given cryptocurrency. Use this to show the price to the user.',
@@ -235,7 +310,7 @@ export async function sendMessage(message: string): Promise<{
 // Define the AI state and UI state types
 export type AIState = Array<{
   id?: number;
-  name?: 'get_crypto_price' | 'get_crypto_stats';
+  name?: string;
   role: 'user' | 'assistant' | 'system';
   content: string;
 }>;

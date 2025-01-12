@@ -13,6 +13,7 @@ import { useEffect, useRef } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import TextareaAutosize from 'react-textarea-autosize';
 import type { AI } from './actions';
+import { CustomConnectButton } from '@ai-rsc/components/wallet/CustomConnectButton';
 
 /*
   !-- With language models becoming better at reasoning, we believe that there is a future where
@@ -85,6 +86,8 @@ export default function Home() {
 
   return (
     <main>
+      <CustomConnectButton />
+
       <div className="pb-[200px] pt-4 md:pt-10">
         <ChatList messages={messages} />
         <ChatScrollAnchor trackVisibility={true} />
