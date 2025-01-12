@@ -1,32 +1,20 @@
 'use client';
 
-import { ChatList } from '@ai-rsc/components/chat-list';
-import { ChatScrollAnchor } from '@ai-rsc/components/chat-scroll-anchor';
-import { UserMessage } from '@ai-rsc/components/llm-crypto/message';
-import { Button } from '@ai-rsc/components/ui/button';
-import type { ChatInputs } from '@ai-rsc/lib/chat-schema';
-import { useEnterSubmit } from '@ai-rsc/lib/use-enter-submit';
-import { useForm } from '@ai-rsc/lib/use-form';
+import { ChatList } from '@components/chat-list';
+import { ChatScrollAnchor } from '@components/chat-scroll-anchor';
+import { UserMessage } from '@components/llm-crypto/message';
+import { Button } from '@components/ui/button';
+import type { ChatInputs } from '@lib/chat-schema';
+import { useEnterSubmit } from '@lib/use-enter-submit';
+import { useForm } from '@lib/use-form';
 import { useActions, useUIState } from 'ai/rsc';
 import { ArrowDownIcon, PlusIcon } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import TextareaAutosize from 'react-textarea-autosize';
 import type { AI } from './actions';
-import { CustomConnectButton } from '@ai-rsc/components/wallet/CustomConnectButton';
+import { CustomConnectButton } from '@components/wallet/CustomConnectButton';
 
-/*
-  !-- With language models becoming better at reasoning, we believe that there is a future where
-  !-- developers only write core application specific components while models take care of routing
-  !-- them based on the user's state in an application.
-
-  !-- With generative user interfaces, the language model decides which user interface to render
-  !-- based on the user's state in the application, giving users the flexibility to interact with
-  !-- your application in a conversational manner instead of navigating through a series of predefined routes.
-*/
-
-// Here we can read the streamable UI using the sendMessage Server Action via a function call
-// render the returned UI like any other normal React components.
 export default function Home() {
   const [messages, setMessages] = useUIState<typeof AI>();
   const { sendMessage } = useActions<typeof AI>();

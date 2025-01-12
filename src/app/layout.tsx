@@ -1,4 +1,4 @@
-import WalletProvider from '@ai-rsc/providers/WalletProvider';
+import WalletProvider from '@providers/WalletProvider';
 import { TooltipProvider } from '@radix-ui/react-tooltip';
 import '@rainbow-me/rainbowkit/styles.css';
 import type { Metadata } from 'next';

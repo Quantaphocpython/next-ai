@@ -19,8 +19,7 @@
       }
     ],
     "paths": {
-      "@ai-rsc/*": ["./src/*"],
-      "@ai-rsc/types/*": ["./types/*"]
+      "@*": ["./src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

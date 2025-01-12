@@ -1,13 +1,13 @@
 'use server';
 
-import { BotCard, BotMessage } from '@ai-rsc/components/llm-crypto/message';
-import { Price } from '@ai-rsc/components/llm-crypto/price';
-import { PriceSkeleton } from '@ai-rsc/components/llm-crypto/price-skeleton';
-import { Stats } from '@ai-rsc/components/llm-crypto/stats';
-import { StatsSkeleton } from '@ai-rsc/components/llm-crypto/stats-skeleton';
-import { AutoConnectWallet } from '@ai-rsc/components/llm-wallet/AutoConnectWallet';
-import TokenTransferComponent from '@ai-rsc/components/llm-wallet/TokenTransferComponent';
-import { env } from '@ai-rsc/env.mjs';
+import { BotCard, BotMessage } from '@components/llm-crypto/message';
+import { Price } from '@components/llm-crypto/price';
+import { PriceSkeleton } from '@components/llm-crypto/price-skeleton';
+import { Stats } from '@components/llm-crypto/stats';
+import { StatsSkeleton } from '@components/llm-crypto/stats-skeleton';
+import { AutoConnectWallet } from '@components/llm-wallet/AutoConnectWallet';
+import TokenTransferComponent from '@components/llm-wallet/TokenTransferComponent';
+import { env } from '@env.mjs';
 import { openai } from '@ai-sdk/openai';
 import type { CoreMessage, ToolInvocation } from 'ai';
 import { createAI, getMutableAIState, streamUI } from 'ai/rsc';
@@ -23,41 +23,25 @@ const binance = new MainClient({
   api_secret: env.BINANCE_API_SECRET,
 });
 
-/* 
-  !-- The first implication of user interfaces being generative is that they are not deterministic in nature.
-  !-- This is because they depend on the generation output by the model. Since these generations are probabilistic 
-  !-- in nature, it is possible for every user query to result in a different user interface being generated.
-
-  !-- Users expect their experience using your application to be predictable, so non-deterministic user interfaces
-  !-- can sound like a bad idea at first. However, one way language models can be set up to limit their generations
-  !-- to a particular set of outputs is to use their ability to call functions, now called tool calling.
-
-  !-- When language models are provided with a set of function definitions, and instructed that it can choose to 
-  !-- execute any of them based on user query, it does either one of the following two things:
-
-  !-- 1. Execute a function that is most relevant to the user query.
-  !-- 2. Not execute any function if the user query is out of bounds the set of functions available to them.
-
-  !-- As you can see in the content variable below, we set the initial message so that the LLM understand what to do.
-  !-- We define a few tool names which allows the LLM to decide whether or not to call the function. Then, we ensure
-  !-- that the LLM understands that if the function is out of bounds of the set of functions available to them, they
-  !-- should respond that they are a demo and cannot do that. Besides that, the LLM can chat with users as normal.
-*/
-
 const content = `
-You are a crypto bot and you can help users get the prices of cryptocurrencies, connect their wallet, or send tokens.
+You are an intelligent virtual assistant specializing in cryptocurrencies, designed to provide users with seamless, secure, and efficient access to information and digital asset management. 
 
-Messages inside [] means that it's a UI element or a user event. For example:
-- "[Price of BTC = 69000]" means that the interface of the cryptocurrency price of BTC is shown to the user.
-- "[Wallet connected]" means that the wallet has been connected.
+Your role is to support users in a variety of tasks, including but not limited to exploring market insights, tracking prices, and assisting with wallet-related actions. 
 
-If the user wants to connect their wallet, call \`connect_wallet\` to open the wallet connection modal.
-If the user wants the price, call \`get_crypto_price\` to show the price.
-If the user wants the market cap or other stats of a given cryptocurrency, call \`get_crypto_stats\` to show the stats.
-If the user wants to send tokens, call \`send_token\` to send the specified amount of tokens to the given address.
-If the user wants to do anything else, it is an impossible task, so you should respond that you are a demo and cannot do that.
+When interacting with users:
+- Any messages enclosed in [ ] represent a UI element or a user-triggered event. For example:
+  - "[BTC price displayed: $69,000]" means the interface shows the current price of Bitcoin.
+  - "[Wallet connected]" signifies that the user's wallet has been successfully linked.
 
-Besides these actions, you can also chat with users.
+When a user requests to:
+- Connect their wallet, invoke \`connect_wallet\` to initiate the wallet connection modal.
+- Retrieve the price of a cryptocurrency, use \`get_crypto_price\` to display the relevant information.
+- Access market stats or data for a specific cryptocurrency, invoke \`get_crypto_stats\`.
+- Send tokens, utilize \`send_token\` to process the transfer securely.
+
+For any requests beyond these capabilities, politely inform the user that this is a demo and the requested action is beyond its scope.
+
+Remember to communicate in a friendly, helpful, and professional manner at all times, ensuring the user feels valued and supported throughout their experience.
 `;
 
 export async function sendMessage(message: string): Promise<{

@@ -2,7 +2,7 @@ import { getDefaultConfig, getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { ledgerWallet, trustWallet } from '@rainbow-me/rainbowkit/wallets';
 import { http } from 'wagmi';
 import { kairos as network } from 'viem/chains';
-import { env } from '@ai-rsc/env.mjs';
+import { env } from '@env.mjs';
 
 const { wallets } = getDefaultWallets();
 

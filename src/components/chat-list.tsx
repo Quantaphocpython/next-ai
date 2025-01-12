@@ -1,6 +1,6 @@
-import type { UIState } from "@ai-rsc/app/actions";
+import type { UIState } from '@app/actions';
 
-export function ChatList({ messages }: { messages: UIState[number][]; }) {
+export function ChatList({ messages }: { messages: UIState[number][] }) {
   // if (!messages.length) return null;
 
   return (

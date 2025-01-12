@@ -1,8 +1,8 @@
-import { cn } from '@ai-rsc/lib/utils';
+import { cn } from '@lib/utils';
 import { Sparkle, UserIcon } from 'lucide-react';
 
 // Different types of message bubbles.
-export function UserMessage({ children }: { children: React.ReactNode; }) {
+export function UserMessage({ children }: { children: React.ReactNode }) {
   return (
     <div className="group relative flex items-start md:-ml-12">
       <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-md border shadow-sm bg-background">
@@ -46,7 +46,7 @@ export function BotCard({
       <div
         className={cn(
           'flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-md border shadow-sm bg-primary text-primary-foreground',
-          !showAvatar && 'invisible',
+          !showAvatar && 'invisible'
         )}
       >
         <Sparkle />
@@ -56,7 +56,7 @@ export function BotCard({
   );
 }
 
-export function AssistantMessage({ children }: { children: React.ReactNode; }) {
+export function AssistantMessage({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={

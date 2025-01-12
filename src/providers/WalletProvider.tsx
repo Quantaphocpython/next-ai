@@ -1,6 +1,6 @@
 'use client';
 
-import walletConfig from '@ai-rsc/configs/WalletConfig';
+import walletConfig from '@configs/WalletConfig';
 import {
   RainbowKitProvider,
   darkTheme,
@@ -10,7 +10,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useTheme } from 'next-themes';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { WagmiProvider } from 'wagmi';
-import { network } from '@ai-rsc/configs/WalletConfig';
+import { network } from '@configs/WalletConfig';
 
 const queryClient = new QueryClient();
 

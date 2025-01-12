@@ -1,72 +1,63 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@ai-rsc/components/ui/card";
-import { ActivityIcon, CoinsIcon, DollarSignIcon, GaugeIcon, TrendingUpIcon, UsersIcon } from "@ai-rsc/components/ui/icons";
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import {
+  ActivityIcon,
+  CoinsIcon,
+  DollarSignIcon,
+  GaugeIcon,
+  TrendingUpIcon,
+  UsersIcon,
+} from '@components/ui/icons';
 
 export const StatsSkeleton = () => {
+  const SkeletonItem = ({
+    icon: Icon,
+    label,
+  }: {
+    icon: React.ElementType;
+    label: string;
+  }) => (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center text-sm text-zinc-500">
+        <Icon className="w-4 h-4 mr-2 text-zinc-600" />
+        {label}
+      </div>
+      <div className="relative overflow-hidden">
+        <div className="h-6 bg-zinc-800 rounded-md">
+          <div
+            className="absolute inset-0 bg-gradient-to-r from-zinc-800 via-zinc-700 to-zinc-800 
+            animate-skeleton-loading"
+          />
+        </div>
+      </div>
+    </div>
+  );
+
   return (
-    <Card className="w-full mx-auto max-w-md rounded-2xl">
-      <CardHeader className="px-6 py-4 border-b">
-        <CardTitle>Market Stats</CardTitle>
+    <Card
+      className="w-full max-w-full mx-auto bg-zinc-900/70 
+      border-zinc-700/30 rounded-2xl overflow-hidden"
+    >
+      <CardHeader
+        className="bg-zinc-800/50 backdrop-blur-sm p-4 
+        border-b border-zinc-700/30 flex flex-row items-center"
+      >
+        <CardTitle className="text-lg font-bold text-zinc-200 flex-grow">
+          Market Stats Loading
+        </CardTitle>
+        <div
+          className="w-8 h-4 bg-gradient-to-r from-zinc-700 via-zinc-600 to-zinc-700 
+          animate-skeleton-loading rounded-full"
+        />
       </CardHeader>
-      <CardContent className="grid gap-6 p-6">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex flex-col gap-1">
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              <DollarSignIcon className="w-4 h-4 inline-block mr-1" />
-              Market Cap
-            </div>
-            <div className="text-transparent w-24 animate-pulse bg-zinc-700 rounded-md mb-2">
-              xxxxxxxxxx
-            </div>
-          </div>
-          <div className="flex flex-col gap-1">
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              <ActivityIcon className="w-4 h-4 inline-block mr-1" />
-              24h Volume
-            </div>
-            <div className="text-transparent w-24 animate-pulse bg-zinc-700 rounded-md mb-2">
-              xxxxxxxxxx
-            </div>
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex flex-col gap-1">
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              <GaugeIcon className="w-4 h-4 inline-block mr-1" />
-              Dominance
-            </div>
-            <div className="text-transparent w-24 animate-pulse bg-zinc-700 rounded-md mb-2">
-              xxxx
-            </div>
-          </div>
-          <div className="flex flex-col gap-1">
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              <TrendingUpIcon className="w-4 h-4 inline-block mr-1" />
-              24h Volume Change
-            </div>
-            <div className="text-transparent w-24 animate-pulse bg-zinc-700 rounded-md mb-2">
-              xxxx
-            </div>
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex flex-col gap-1">
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              <CoinsIcon className="w-4 h-4 inline-block mr-1" />
-              Max Supply
-            </div>
-            <div className="text-transparent w-24 animate-pulse bg-zinc-700 rounded-md mb-2">
-              xxxxxxxxx
-            </div>
-          </div>
-          <div className="flex flex-col gap-1">
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              <UsersIcon className="w-4 h-4 inline-block mr-1" />
-              Rank
-            </div>
-            <div className="text-transparent w-24 animate-pulse bg-zinc-700 rounded-md mb-2">
-              xx
-            </div>
-          </div>
+
+      <CardContent className="p-4 space-y-4">
+        <div className="grid grid-cols-3 gap-3">
+          <SkeletonItem icon={DollarSignIcon} label="Market Cap" />
+          <SkeletonItem icon={ActivityIcon} label="24h Volume" />
+          <SkeletonItem icon={GaugeIcon} label="Dominance" />
+          <SkeletonItem icon={TrendingUpIcon} label="Volume Change" />
+          <SkeletonItem icon={CoinsIcon} label="Total Supply" />
+          <SkeletonItem icon={UsersIcon} label="Rank" />
         </div>
       </CardContent>
     </Card>

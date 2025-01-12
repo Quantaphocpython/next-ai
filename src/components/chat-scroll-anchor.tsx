@@ -1,6 +1,6 @@
 'use client';
 
-import { useAtBottom } from '@ai-rsc/lib/use-at-bottom';
+import { useAtBottom } from '@lib/use-at-bottom';
 import * as React from 'react';
 import { useInView } from 'react-intersection-observer';
 

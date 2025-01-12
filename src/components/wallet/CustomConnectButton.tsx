@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '../ui/button';
-import { useToast } from '../../../@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import {
   Tooltip,
   TooltipContent,
